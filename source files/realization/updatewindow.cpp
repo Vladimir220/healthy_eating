@@ -191,10 +191,10 @@ void UpdateWindow::SetMenu()
                                 "Файлы базы данных (*.db)");
     if(!fileName.isEmpty())
     {
+        _model2->clear();
+        _model3->clear();
         if(_db->SetDb(fileName))
         {
-            _model2->clear();
-            _model3->clear();
             QMessageBox::information(this, "Успех","Файл успешно открыт");
             QString query = "SELECT dish FROM DISHES";
             _model1->setQuery(QSqlQuery(query, QSqlDatabase::database("line")));
