@@ -191,13 +191,10 @@ void UpdateWindow::SetMenu()
                                 "Файлы базы данных (*.db)");
     if(!fileName.isEmpty())
     {
-        _model2->clear();
-        _model3->clear();
         if(_db->SetDb(fileName))
         {
             QMessageBox::information(this, "Успех","Файл успешно открыт");
-            QString query = "SELECT dish FROM DISHES";
-            _model1->setQuery(QSqlQuery(query, QSqlDatabase::database("line")));
+            UpdateDishesList();
         }
         else
             QMessageBox::warning(this, "Ошибка","Не удалось открыть файл");
@@ -206,9 +203,11 @@ void UpdateWindow::SetMenu()
 
 void UpdateWindow::UpdateDishesList()
 {
-    _model2->clear();
-    _model3->clear();
-    QString query = "SELECT dish FROM DISHES";
+    QString query = "SELECT * WHERE 1=2";
+    _model2->setQuery(QSqlQuery(query, QSqlDatabase::database("line")));
+    _model3->setQuery(QSqlQuery(query, QSqlDatabase::database("line")));
+
+    query = "SELECT dish FROM DISHES";
     _model1->setQuery(QSqlQuery(query, QSqlDatabase::database("line")));
 }
 
@@ -223,6 +222,6 @@ void UpdateWindow::UpdateComLists(const QModelIndex &index)
     QSqlQuery q("SELECT calories, type FROM dishes WHERE dish = '"+index.data(Qt::DisplayRole).toString()+"';",
                 QSqlDatabase::database("line"));
     q.next();
-    label_4->setText("Калории блюда: " + q.value(0).toString());
-    label_5->setText("Тип блюда: " + q.value(1).toString());
+        label_4->setText("Калории блюда: " + q.value(0).toString());
+        label_5->setText("Тип блюда: " + q.value(1).toString());
 }
